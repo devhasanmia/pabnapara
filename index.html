@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পাবনাপাড়া কবরস্থান</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <!-- Navigation -->
+    <nav class="bg-blue-700 bg-opacity-90 p-4 text-white shadow-md sticky top-0 z-50 w-full">
+        <div class="w-full flex justify-center items-center">
+            <div class="font-bold tracking-wide">
+                <span class="bg-white text-blue-700 px-4 py-2 rounded-lg shadow-md">পাবনাপাড়া কবরস্থান</span>
+            </div>
+        </div>
+    </nav>
+    <!-- Donation Section -->
+    <div id="donation" class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-700">কবরস্থান পরিষ্কার করার জন্য দানের তালিকা</h2>
+        <div class="flex flex-col sm:flex-row justify-between items-center bg-blue-100 text-blue-800 p-4 rounded-lg mb-4">
+            <p class="font-semibold">মোট দান: <span id="total-donation" class="font-bold text-green-700">০</span> টাকা</p>
+            <p class="font-semibold">তারিখ: <span class="font-bold">০২ এপ্রিল ২০২৫</span></p>
+        </div>
+        <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+            <thead>
+                <tr class="bg-gray-300 text-gray-700">
+                    <th class="border border-gray-400 p-3">নাম</th>
+                    <th class="border border-gray-400 p-3">পরিমাণ (টাকা)</th>
+                </tr>
+            </thead>
+            <tbody id="donation-list" class="text-gray-700"></tbody>
+        </table>
+    </div>
+    
+    <!-- Expenses Section -->
+    <div id="expenses" class="max-w-3xl mx-auto bg-white p-2 rounded-lg shadow-lg mt-6">
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">ব্যয়ের হিসাব</h2>
+        <table class="w-full border-collapse text-gray-800">
+            <thead>
+                <tr class="bg-blue-600 text-white">
+                    <th class="p-4 text-left">খাত</th>
+                    <th class="p-4 text-left">পরিমাণ (টাকা)</th>
+                    <th class="p-4 text-left">তারিখ</th>
+                </tr>
+            </thead>
+            <tbody id="expense-list" class="text-gray-700"></tbody>
+        </table>
+        <div class="mt-6 flex flex-col sm:flex-row justify-between items-center">
+            <p class="text-lg font-semibold mb-4 sm:mb-0">মোট ব্যয়: <span id="total-expense" class="font-bold text-red-600">০</span> টাকা</p>
+            <p class="text-lg font-semibold">অবশিষ্ট টাকা: <span id="remaining-balance" class="font-bold text-green-600">০</span> টাকা</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 text-white text-center py-8 mt-10 rounded-t-lg shadow-lg">
+        <h3 class="text-xl font-bold mb-2">যুব সমাজের প্রধানগণ</h3>
+        <ul class="mb-4 space-y-1">
+            <li>► মোঃ রহিদুল ইসলাম</li>
+            <li>► মোঃ হাসান আলী</li>
+            <li>► মোঃ হান্নান আলী</li>
+
+        </ul>
+        <p class="text-sm">&copy; ২০২৫ কবরস্থান পরিষ্কারকরণ প্রকল্প | সকল অধিকার সংরক্ষিত</p>
+        <p class="text-sm mt-2">যোগাযোগ: সলিউশন পয়েন্ট | মোবাইল: <span class="font-semibold">০১৭৪০৩৯৮১৯৬</span></p>
+    </footer>
+    
+    <!-- JavaScript to Fetch Data -->
+    <script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const donationList = document.getElementById("donation-list");
+                const expenseList = document.getElementById("expense-list");
+                let totalDonation = 0;
+                let totalExpense = 0;
+                
+                data.donations.forEach(donation => {
+                    totalDonation += donation.amount;
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td class="border border-gray-400 p-3">${donation.name}</td>
+                        <td class="border border-gray-400 p-3 text-center">${donation.amount}</td>
+                    `;
+                    donationList.appendChild(row);
+                });
+                
+                data.expenses.forEach(expense => {
+                    totalExpense += expense.amount;
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td class="border border-gray-400 p-3">${expense.category}</td>
+                        <td class="border border-gray-400 p-3 text-center">${expense.amount}</td>
+                        <td class="border border-gray-400 p-3 text-center">${expense.date}</td>
+                    `;
+                    expenseList.appendChild(row);
+                });
+                
+                document.getElementById("total-donation").innerText = totalDonation;
+                document.getElementById("total-expense").innerText = totalExpense;
+                document.getElementById("remaining-balance").innerText = totalDonation - totalExpense;
+            })
+            .catch(error => console.error('Error loading the JSON data:', error));
+    </script>
+</body>
+</html>
