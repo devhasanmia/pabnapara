@@ -15,7 +15,6 @@
         { "name": "গপন দান", "amount": 150 }
     ],
     "expenses": [
-        { "category": "ঘাস মারা বিষ", "amount": 100, "date": "02 April 2025" },
-        { "category": "শ্রমিকের মজুরি", "amount": 1200, "date": "02 April 2025" }
+        { "category": "ঘাস মারা বিষ", "amount": 100, "date": "02 April 2025" }
     ]
 }
